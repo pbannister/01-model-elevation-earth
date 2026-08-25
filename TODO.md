@@ -9,6 +9,9 @@
       The task is defined in `prompts/tasks/01-download-datasets-implement.md`.
 - [ ] handle voids in the downloaded datasets by filling them from other datasets.
       Deferred: the ETOPO 2022 dataset has no voids, so void handling is not urgent.
+- [ ] build status/dashboard pages for this project and publish them to labs.bannister.us.
+      Future task, not yet defined.
+      Will use the `site.in/` and `site.out/` directories and the homelab publishing conventions.
 
 ## Recently Completed
 
