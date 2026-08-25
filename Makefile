@@ -5,7 +5,10 @@
 #	Each rule calls the appropriate tool instead of reimplementing work:
 #		clean:  rm generated output
 #		test:   npm test
-#		deploy, install: reserved; not yet defined.
+#		site:   build the status site from site.in/ into site.out/
+#		state:  fetch live dataset state into dataflow.out/site-state.txt
+#		deploy: fetch state, build the site, publish to labs.bannister.us
+#		install: reserved; not yet defined.
 #
 
 clean:
@@ -14,10 +17,16 @@ clean:
 test:
 	npm test
 
-deploy:
-	@echo '==== No deploy yet defined'
+site:
+	sh scripts/site-build.sh
+
+state:
+	sh scripts/site-state-fetch.sh
+
+deploy: state site
+	sh scripts/site-deploy.sh
 
 install:
 	@echo '==== No install yet defined'
 
-.PHONY: clean test deploy install
+.PHONY: clean test site state deploy install

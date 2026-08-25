@@ -6,9 +6,6 @@
       The task is defined in `prompts/tasks/01-download-datasets-implement.md`.
 - [ ] handle voids in the downloaded datasets by filling them from other datasets.
       Deferred: the ETOPO 2022 dataset has no voids, so void handling is not urgent.
-- [ ] build status/dashboard pages for this project and publish them to labs.bannister.us.
-      Future task, not yet defined.
-      Will use the `site.in/` and `site.out/` directories and the homelab publishing conventions.
 - [ ] consider transforming the downloaded datasets to one common format.
       A single common format is simpler for dependent projects to ingest.
       The choice of common format is open; candidates need evaluation.
@@ -16,6 +13,9 @@
 
 ## Recently Completed
 
+- [x] build status/dashboard pages for this project and publish them to labs.bannister.us.
+      Generated a summary page and a live dataset dashboard from `site.in/` via `scripts/site-build.sh`.
+      Published at `labs.bannister.us/projects/model-elevation-earth/` following the homelab publishing conventions (registered as a self-published project).
 - [x] download the ETOPO 2022 dataset into `/datasets/`.
       The task is defined in `prompts/tasks/02-download-etopo-2022.md`.
       ETOPO 2022 is chosen over GEBCO because it downloads over plain HTTPS without a license gate.

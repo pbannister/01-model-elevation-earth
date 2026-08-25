@@ -1,0 +1,32 @@
+<h1>Global Elevation Model (GDEM) Dataset</h1>
+
+<p>
+This project gathers global digital elevation model datasets for the Earth,
+so dependent projects can consume elevation and seafloor relief in verified,
+common forms.
+</p>
+
+<h2>Status</h2>
+
+<ul>
+  <li>ETOPO 2022: downloaded; see the dashboard for tile counts, size, and download date.</li>
+  <li>Further datasets are planned: Copernicus DEM GLO-30 and NASADEM are marked for download in the datasets manifest.</li>
+  <li>Void handling: deferred until more datasets are downloaded; ETOPO 2022 has no voids by construction.</li>
+  <li>Common data format: under consideration, to simplify ingestion by dependent projects.</li>
+</ul>
+
+<h2>Datasets</h2>
+
+<p>
+Datasets are stored on the dedicated datasets volume and recorded in a
+manifest with id, purpose, download date, and source.
+The dashboard shows the current numbers.
+</p>
+
+<h2>More</h2>
+
+<ul>
+  <li>Dashboard: <a href="dashboard.html">dataset and volume state</a></li>
+  <li>Source of truth: <code>datasets.in/datasets-manifest.yml</code></li>
+  <li>Dataset survey: <code>documents/01-dataset-sources.md</code> and <code>documents/02-datasets-suitable.md</code></li>
+</ul>
