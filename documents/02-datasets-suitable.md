@@ -135,6 +135,43 @@ The manifest is the input for automated download; each listed dataset carries a 
 
 Only datasets with `want_download: true` are fetched by the download task.
 
+## Dataset Sizes
+
+Sizes below are rough estimates for storage planning, to the nearest gigabyte.
+
+The two Copernicus figures were measured directly from the public AWS S3 buckets on 2026-08-25.
+
+The remaining figures are computed from grid dimensions and published file counts; the as-shipped size depends on format and compression.
+
+### Measured sizes
+
+| Dataset | Size | How determined |
+| --- | --- | --- |
+| Copernicus DEM GLO-30 | ~590 GB | Sum of 26,450 DEM tile objects in `s3://copernicus-dem-30m` |
+| Copernicus DEM GLO-90 | ~80 GB | Sampled tile sizes times the 26,475-tile official list |
+
+### Estimated sizes
+
+| Dataset | Raw size | As shipped |
+| --- | --- | --- |
+| SRTM v3 (1 arc-sec) | ~371 GB | ~65 GB GeoTIFF |
+| NASADEM (1 arc-sec) | ~370 GB | ~130 GB incl. aux layers |
+| ALOS World 3D (30 m) | ~635 GB | ~110 GB |
+| FABDEM (30 m) | ~1,245 GB | ~150-300 GB |
+| MERIT DEM (90 m) | ~40 GB | ~15-40 GB |
+| ETOPO 2022 (15 arc-sec) | ~7 GB | ~5-8 GB |
+| GEBCO 2024 (15 arc-sec) | ~15 GB | ~9 GB |
+
+### Sizing guidance
+
+- The smaller seafloor datasets (ETOPO 2022, GEBCO 2024) need only ~5-9 GB each.
+- The larger land datasets need ~65-590 GB each; GLO-30 dominates at ~590 GB.
+- The current wanted set (GLO-30, NASADEM, ETOPO 2022) is roughly 730 GB.
+- A full 1-arc-second land ambition (adding SRTM, AW3D30, FABDEM) is roughly 1.1-1.7 TB.
+- The recommended initial `/datasets/` volume size is 2 TB.
+- A 1.5 TB volume fits the wanted set plus one extra dataset; 1 TB fits the wanted set with almost no headroom.
+- The 2 m polar datasets (ArcticDEM, REMA) are excluded from this math; they run to multiple TB.
+
 ## Storage
 
 Large datasets are stored on the dedicated `/datasets/` volume, mounted on both `athena.lan` and `beast.lan`.
