@@ -2,9 +2,6 @@
 
 ## Pending
 
-- [ ] download the ETOPO 2022 dataset into `/datasets/`.
-      The task is defined in `prompts/tasks/02-download-etopo-2022.md`.
-      ETOPO 2022 is chosen over GEBCO because it downloads over plain HTTPS without a license gate.
 - [ ] define and implement automated download of the remaining datasets in `datasets.in/datasets-manifest.yml`.
       The task is defined in `prompts/tasks/01-download-datasets-implement.md`.
 - [ ] handle voids in the downloaded datasets by filling them from other datasets.
@@ -15,6 +12,10 @@
 
 ## Recently Completed
 
+- [x] download the ETOPO 2022 dataset into `/datasets/`.
+      The task is defined in `prompts/tasks/02-download-etopo-2022.md`.
+      ETOPO 2022 is chosen over GEBCO because it downloads over plain HTTPS without a license gate.
+      Downloaded 350 GeoTIFF tiles (288 ice-surface, 62 bedrock) into `/datasets/dataset-etopo-2022` and recorded the download in `/datasets/manifest.yml`.
 - [x] enumerate the possible sources of GDEM datasets that are freely available on the Internet.
     - [x] generate a list of possible sources, and their likely use, into a human-consumable file: `documents/01-dataset-sources.md`
     - [x] describe the meaningful attributes of the different source datasets
