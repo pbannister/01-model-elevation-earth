@@ -16,6 +16,7 @@ fi
 
 COUNT_ENTRIES=$(grep -c '^  - id:' "$FILE_MANIFEST")
 COUNT_WANT=$(grep -c '^    want_download:' "$FILE_MANIFEST")
+COUNT_STORAGE=$(grep -c '^    storage_dir:' "$FILE_MANIFEST")
 
 if [ "$COUNT_ENTRIES" -eq 0 ]; then
     echo '01-datasets-manifest: no dataset entries found' >&2
@@ -24,6 +25,11 @@ fi
 
 if [ "$COUNT_ENTRIES" -ne "$COUNT_WANT" ]; then
     echo "01-datasets-manifest: $COUNT_ENTRIES entries but $COUNT_WANT want_download fields" >&2
+    exit 1
+fi
+
+if [ "$COUNT_ENTRIES" -ne "$COUNT_STORAGE" ]; then
+    echo "01-datasets-manifest: $COUNT_ENTRIES entries but $COUNT_STORAGE storage_dir fields" >&2
     exit 1
 fi
 

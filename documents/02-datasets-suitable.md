@@ -134,3 +134,19 @@ The machine-readable selection lives in `datasets.in/datasets-manifest.yml`.
 The manifest is the input for automated download; each listed dataset carries a `want_download` field.
 
 Only datasets with `want_download: true` are fetched by the download task.
+
+## Storage
+
+Large datasets are stored on the dedicated `/datasets/` volume, mounted on both `athena.lan` and `beast.lan`.
+
+The `/datasets/` volume is a precondition: the download scripts verify it exists before downloading.
+
+Each dataset is stored in a distinct semantic-sort directory named `/datasets/dataset-<semantic-sort-source-name>`.
+
+The `storage_dir` field in the manifest names the directory for each dataset.
+
+A `/datasets/manifest.yml` file records the datasets downloaded: id, purpose, download date, and source.
+
+The download scripts skip a dataset already recorded there, so nothing downloads twice.
+
+The homelab project keeps the two hosts' `/datasets/` volumes synchronized.

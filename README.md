@@ -46,10 +46,23 @@ All project features are defined in `prompts/features/` and implemented in `sour
 - `site.out/` contains generated static-site output (not version-controlled).
 - `Makefile` drives the tests (`make test`) and cleanup (`make clean`).
 
+## Dataset Storage
+
+Large datasets are stored on the dedicated `/datasets/` volume, not under `/home/`.
+The `/datasets/` volume is an LVM striped volume on `vg2`, mounted on both `athena.lan` and `beast.lan`.
+The existence of `/datasets/` is a precondition before any dataset download.
+Datasets live in distinct semantic-sort directories: `/datasets/dataset-<semantic-sort-source-name>`.
+A `/datasets/manifest.yml` file records the datasets downloaded: id, purpose, download date, and source.
+The homelab project keeps the two hosts' `/datasets/` synchronized so a dataset downloads only once.
+The volume creation and synchronization tasks live in the homelab project:
+- `prompts/tasks/02-datasets-volume-create.md`
+- `prompts/tasks/03-datasets-sync.md`
+
 ## Privacy Boundaries
 
 This project has no declared privacy boundaries yet.
 The LLM treats any future boundary declared here as an authoritative scope exclusion.
+The LLM may create and modify files under `/datasets/` as needed for this project; this is an explicit owner authorization.
 
 ## Canonical Files
 

@@ -3,12 +3,15 @@
 # Purpose: input for the automated download task.
 # Each dataset entry carries the fields an automated downloader needs,
 # and a `want_download` flag that decides whether the download task fetches it.
+# Each downloaded dataset is stored on the /datasets/ volume in the directory
+# named by `storage_dir`, recorded in /datasets/manifest.yml.
 # See `documents/02-datasets-suitable.md` for the reasoning behind this selection.
 # Facts verified 2026-08-24.
 
 datasets:
   - id: copernicus-dem-glo30
     name: Copernicus DEM GLO-30
+    storage_dir: dataset-copernicus-dem-glo30
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: global land
@@ -20,9 +23,9 @@ datasets:
     file_format: geotiff
     license: free and open
     want_download: true
-
   - id: nasadem
     name: NASADEM
+    storage_dir: dataset-nasadem
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: 56 S to 60 N
@@ -34,9 +37,9 @@ datasets:
     file_format: hgt
     license: public domain
     want_download: true
-
   - id: srtm-v3
     name: SRTM v3 (SRTMGL1)
+    storage_dir: dataset-srtm-v3
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: 56 S to 60 N
@@ -48,9 +51,9 @@ datasets:
     file_format: hgt
     license: public domain
     want_download: false
-
   - id: etopo-2022
     name: ETOPO 2022
+    storage_dir: dataset-etopo-2022
     resolution_arcsec: 15
     resolution_meters: 450
     coverage: global land and seafloor
@@ -62,9 +65,9 @@ datasets:
     file_format: netcdf, geotiff
     license: public domain
     want_download: true
-
   - id: gebco-2024
     name: GEBCO 2024
+    storage_dir: dataset-gebco-2024
     resolution_arcsec: 15
     resolution_meters: 450
     coverage: global land and seafloor
@@ -76,9 +79,9 @@ datasets:
     file_format: netcdf, geotiff
     license: free with agreement
     want_download: false
-
   - id: alos-aw3d30
     name: ALOS World 3D (AW3D30)
+    storage_dir: dataset-alos-aw3d30
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: global
@@ -90,9 +93,9 @@ datasets:
     file_format: geotiff
     license: free with agreement
     want_download: false
-
   - id: fabdem
     name: FABDEM
+    storage_dir: dataset-fabdem
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: global
@@ -104,9 +107,9 @@ datasets:
     file_format: geotiff
     license: free with citation
     want_download: false
-
   - id: aster-gdem-v3
     name: ASTER GDEM v3
+    storage_dir: dataset-aster-gdem-v3
     resolution_arcsec: 1
     resolution_meters: 30
     coverage: 83 S to 83 N
@@ -118,9 +121,9 @@ datasets:
     file_format: geotiff
     license: free with registration
     want_download: false
-
   - id: merit-dem
     name: MERIT DEM
+    storage_dir: dataset-merit-dem
     resolution_arcsec: 3
     resolution_meters: 90
     coverage: global land
@@ -132,9 +135,9 @@ datasets:
     file_format: geotiff
     license: free for research with citation
     want_download: false
-
   - id: arcticdem
     name: ArcticDEM
+    storage_dir: dataset-arcticdem
     resolution_meters: 2
     coverage: land north of 60 N
     data_type: digital surface model
@@ -145,9 +148,9 @@ datasets:
     file_format: geotiff
     license: free
     want_download: false
-
   - id: rema
     name: REMA
+    storage_dir: dataset-rema
     resolution_meters: 2
     coverage: Antarctica
     data_type: digital surface model

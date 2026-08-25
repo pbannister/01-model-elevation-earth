@@ -3,8 +3,9 @@
 [TASK]
 Define the automated download mechanism for the datasets listed in `datasets.in/datasets-manifest.yml`.
 Implement the download for every dataset whose `want_download` field is `true`.
+Check that `/datasets/` exists and is writable before downloading anything; stop with a clear message if it is missing.
 Create the download scripts in `scripts/`.
-Download the datasets into `dataflow.in/`.
+Download the datasets into `/datasets/`, one directory per dataset.
 Add tests for the download scripts in `tests/`.
 Run `make test` from the repository root.
 Commit the completed work.
@@ -19,12 +20,18 @@ Each entry carries the fields an automated downloader needs: id, access method, 
 Only entries with `want_download: true` are in scope for this task.
 The datasets selected for download are described in `documents/02-datasets-suitable.md`.
 All recommended download sources are publicly accessible without registration or paid access.
-The download scripts must place data under `dataflow.in/`.
-Generated output must not be committed; `dataflow.in/` content is input data and may be committed or ignored as the task decides.
+The large datasets must not live on the same storage volume as `/home/`; the `/datasets/` volume exists for this purpose.
+The `/datasets/` volume is a precondition: the download scripts must verify it before any download starts.
+Each dataset is stored in a distinct semantic-sort directory named `/datasets/dataset-<semantic-sort-source-name>`.
+A `/datasets/manifest.yml` file records the datasets already downloaded: id, purpose, download date, and source.
+The download scripts must skip a dataset already recorded in `/datasets/manifest.yml` so nothing is downloaded twice.
+The `/datasets/` volume is shared with `athena.lan` and `beast.lan`; a homelab task keeps both hosts synchronized.
+Generated output must not be committed.
 
 [FILES]
 - `scripts/datasets-download.sh` — new
 - `scripts/datasets-download-<dataset-id>.sh` — new, one per wanted dataset
 - `tests/03-datasets-download.sh` — new
 - `datasets.in/datasets-manifest.yml` — existing, read-only for this task
-- `dataflow.in/` — populated by the download scripts
+- `/datasets/` — populated by the download scripts, outside the repository
+- `/datasets/manifest.yml` — created or updated by the download scripts, outside the repository
