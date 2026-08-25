@@ -22,6 +22,7 @@ test:
 
 site:
 	sh scripts/site-build.sh
+	sh scripts/site-condense.sh
 
 state:
 	sh scripts/site-state-fetch.sh
