@@ -1,0 +1,160 @@
+# Datasets manifest.
+#
+# Purpose: input for the automated download task.
+# Each dataset entry carries the fields an automated downloader needs,
+# and a `want_download` flag that decides whether the download task fetches it.
+# See `documents/02-datasets-suitable.md` for the reasoning behind this selection.
+# Facts verified 2026-08-24.
+
+datasets:
+  - id: copernicus-dem-glo30
+    name: Copernicus DEM GLO-30
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: global land
+    data_type: digital surface model
+    vertical_reference: EGM2008
+    voids: near-void-free
+    access_method: aws-s3-public
+    access_location: s3://copernicus-dem-30m
+    file_format: geotiff
+    license: free and open
+    want_download: true
+
+  - id: nasadem
+    name: NASADEM
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: 56 S to 60 N
+    data_type: digital surface model
+    vertical_reference: EGM96
+    voids: improved from SRTM, void mask available
+    access_method: aws-s3-public
+    access_location: s3://nasadem
+    file_format: hgt
+    license: public domain
+    want_download: true
+
+  - id: srtm-v3
+    name: SRTM v3 (SRTMGL1)
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: 56 S to 60 N
+    data_type: digital surface model
+    vertical_reference: EGM96
+    voids: void-filled in v3, mask available separately
+    access_method: aws-s3-public
+    access_location: s3://srtm
+    file_format: hgt
+    license: public domain
+    want_download: false
+
+  - id: etopo-2022
+    name: ETOPO 2022
+    resolution_arcsec: 15
+    resolution_meters: 450
+    coverage: global land and seafloor
+    data_type: relief model
+    vertical_reference: sea level
+    voids: none, blended product
+    access_method: https-direct
+    access_location: https://www.ncei.noaa.gov/products/etopo-global-relief-model
+    file_format: netcdf, geotiff
+    license: public domain
+    want_download: true
+
+  - id: gebco-2024
+    name: GEBCO 2024
+    resolution_arcsec: 15
+    resolution_meters: 450
+    coverage: global land and seafloor
+    data_type: bathymetry and relief
+    vertical_reference: sea level
+    voids: none, blended product
+    access_method: portal-license-gated
+    access_location: https://www.gebco.net/data-products-gridded-bathymetry-data/gebco2024-grid
+    file_format: netcdf, geotiff
+    license: free with agreement
+    want_download: false
+
+  - id: alos-aw3d30
+    name: ALOS World 3D (AW3D30)
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: global
+    data_type: digital surface model
+    vertical_reference: EGM96
+    voids: some, filled in later releases
+    access_method: portal-registration
+    access_location: https://www.eorc.jaxa.jp/ALOS/en/dataset/aw3d30/aw3d30_e.htm
+    file_format: geotiff
+    license: free with agreement
+    want_download: false
+
+  - id: fabdem
+    name: FABDEM
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: global
+    data_type: digital terrain model
+    vertical_reference: EGM2008
+    voids: near-void-free
+    access_method: api-key
+    access_location: https://portal.opentopography.org
+    file_format: geotiff
+    license: free with citation
+    want_download: false
+
+  - id: aster-gdem-v3
+    name: ASTER GDEM v3
+    resolution_arcsec: 1
+    resolution_meters: 30
+    coverage: 83 S to 83 N
+    data_type: digital surface model
+    vertical_reference: EGM96
+    voids: cloud-contaminated areas, artifacts possible
+    access_method: portal-registration
+    access_location: https://earthdata.nasa.gov
+    file_format: geotiff
+    license: free with registration
+    want_download: false
+
+  - id: merit-dem
+    name: MERIT DEM
+    resolution_arcsec: 3
+    resolution_meters: 90
+    coverage: global land
+    data_type: digital terrain model
+    vertical_reference: EGM96
+    voids: error-removed, void mask published
+    access_method: https-direct
+    access_location: https://global-hydrodynamics.github.io/MERIT_DEM/
+    file_format: geotiff
+    license: free for research with citation
+    want_download: false
+
+  - id: arcticdem
+    name: ArcticDEM
+    resolution_meters: 2
+    coverage: land north of 60 N
+    data_type: digital surface model
+    vertical_reference: WGS84 ellipsoid
+    voids: minimal
+    access_method: https-direct
+    access_location: https://data.pgc.umn.edu/elev/dem/setsm/
+    file_format: geotiff
+    license: free
+    want_download: false
+
+  - id: rema
+    name: REMA
+    resolution_meters: 2
+    coverage: Antarctica
+    data_type: digital surface model
+    vertical_reference: WGS84 ellipsoid
+    voids: minimal
+    access_method: https-direct
+    access_location: https://data.pgc.umn.edu/elev/dem/setsm/
+    file_format: geotiff
+    license: free
+    want_download: false
