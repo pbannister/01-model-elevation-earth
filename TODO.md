@@ -9,6 +9,10 @@
 - [ ] build status/dashboard pages for this project and publish them to labs.bannister.us.
       Future task, not yet defined.
       Will use the `site.in/` and `site.out/` directories and the homelab publishing conventions.
+- [ ] consider transforming the downloaded datasets to one common format.
+      A single common format is simpler for dependent projects to ingest.
+      The choice of common format is open; candidates need evaluation.
+      Deferred: not a priority while only the ETOPO 2022 dataset is downloaded.
 
 ## Recently Completed
 
