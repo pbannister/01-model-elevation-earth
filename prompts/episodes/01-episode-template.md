@@ -38,10 +38,10 @@ This example shows the sources-survey task as an episode.
 It is illustrative; it is not dispatched as-is.
 
 [EPISODE]
-Write `documents/00-sources.md`, the list of freely available GDEM dataset sources.
+Write `documents/01-dataset-sources.md`, the list of freely available GDEM dataset sources.
 
 [ACCEPTANCE]
-- Does `documents/00-sources.md` list every known free GDEM source?
+- Does `documents/01-dataset-sources.md` list every known free GDEM source?
 - Does each entry describe the source's likely use and meaningful attributes?
 - Is the diff reviewable in one sitting?
 
@@ -51,7 +51,7 @@ Write `documents/00-sources.md`, the list of freely available GDEM dataset sourc
 
 [SUB-TASKS]
 - Research freely available GDEM dataset sources.
-- Write `documents/00-sources.md`.
+- Write `documents/01-dataset-sources.md`.
 - Review the document for accuracy and completeness.
 - Run `make test`.
 
@@ -59,7 +59,7 @@ Write `documents/00-sources.md`, the list of freely available GDEM dataset sourc
 Report the created file and the result of `make test`.
 
 [FILES]
-- `documents/00-sources.md` — new
+- `documents/01-dataset-sources.md` — new
 
 [BRANCH]
 llm/episode-01
