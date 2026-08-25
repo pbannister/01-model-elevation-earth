@@ -16,6 +16,26 @@ Suitable datasets must meet these requirements:
 - Completeness: voids must be fillable from other datasets without leaving gaps.
 - The dataset must be one of the sources enumerated in `documents/01-dataset-sources.md`.
 
+## Hosting Decision
+
+The official hosting is the only reliable source for complete datasets.
+
+HuggingFace mirrors were evaluated and rejected as a primary source.
+
+HuggingFace download mechanics are convenient: anonymous downloads work without authentication, and the `huggingface_hub` library and `hf_transfer` accelerator provide resumable, parallel, range-request downloads.
+
+The mirrors are incomplete: `aliasfox/srtm30m` advertises 14,296 tiles but holds 383, and `aliasfox/copernicus-glo30-chunks` holds no data files at all.
+
+The mirrors reformat data: several repackage tiles into proprietary formats such as `.ozt2` and OZCHNK01, which breaks the project's goal of standard consumable formats.
+
+The mirrors carry third-party licensing with `license: other` tags; the official buckets alone make the Copernicus and public-domain terms trustworthy.
+
+HuggingFace rate-limits unauthenticated traffic, which a multi-hundred-gigabyte pull would hit; the official AWS S3 and NOAA HTTPS endpoints impose no such limit.
+
+The recommended download scripts must therefore use the official AWS S3 and NOAA HTTPS endpoints recorded in `datasets.in/datasets-manifest.yml`.
+
+The useful HuggingFace techniques (resumable range requests, parallel chunking) should be borrowed into the download scripts, not the hosting.
+
 ## Recommended Land Datasets (1 arc-second)
 
 | Dataset | Coverage | Access | Automated | License | Role |
