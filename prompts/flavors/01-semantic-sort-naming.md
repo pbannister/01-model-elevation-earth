@@ -64,8 +64,8 @@ A semantic-sort name uses stable components in this order:
     * `<domain>-<role>.sh`
 * Ordered script names combine both patterns:
     * `<number>-<domain>-<role>.sh`
-* For example, the script that builds the site is `site-build.sh`, not `build-site.sh`.
-* For example, the script that syncs the site is `site-sync.sh`, not `sync-site.sh`.
+* For example, the script that downloads datasets is `datasets-download.sh`, not `download-datasets.sh`.
+* For example, the script that syncs datasets is `datasets-sync.sh`, not `sync-datasets.sh`.
 
 ## Ordered Prompt Filename rules
 

@@ -64,7 +64,7 @@ The required directories are:
 - Do not invent a new feature name.
 - Use whole words in directory and filenames.
 - Do not use abbreviations in directory and filenames.
-- Scripts use semantic-sort names such as `site-build.sh` and `site-sync.sh`.
+- Scripts use semantic-sort names such as `datasets-download.sh` and `datasets-sync.sh`.
 - Script names order components from broad meaning to narrow meaning: `<domain>-<role>.sh`.
 - Source modules use names such as `aspect_facet_category.ext`.
 

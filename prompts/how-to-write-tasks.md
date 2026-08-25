@@ -54,8 +54,8 @@ The phrase `Execute the next TODO task` explicitly requests TODO-driven executio
 Example:
 ```ini
 [TASK]
-Create `scripts/site-build.sh`.
-The script generates `site.out/` from `site.in/`.
+Create `scripts/datasets-download.sh`.
+The script downloads the datasets listed in `datasets.in/datasets-manifest.yml`.
 ```
 
 ## 4. Writing the [OUTPUT FORMAT] Section
@@ -71,13 +71,13 @@ The script generates `site.out/` from `site.in/`.
 Examples:
 ```ini
 [OUTPUT FORMAT]
-Provide only the complete content of `scripts/site-build.sh`.
+Provide only the complete content of `scripts/datasets-download.sh`.
 ```
 ```ini
 [OUTPUT FORMAT]
 Produce these complete files in this order:
-1. `sources/auth/auth_handler.cpp`
-2. `sources/auth/auth_handler.h`
+1. `sources/datasets/dataset_merge.py`
+2. `sources/datasets/dataset_merge_test.py`
 ```
 ```ini
 [OUTPUT FORMAT]
