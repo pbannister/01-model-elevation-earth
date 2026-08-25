@@ -2,16 +2,20 @@
 #
 # site-deploy.sh: publish the project site to the labs site.
 #
-# Feature: prompts/features/01-site-build.md
+# RETIRED. All publishing to labs.bannister.us goes through the homelab
+# project (homelab-publish): the homelab registers this project with
+# `pages_source` in sources/projects.yaml and publishes site.out/ with its
+# own deploy (see the homelab's documents/09-project-pages-conventions.md).
+# Do not use this script for normal publishing; it is kept only for
+# emergency use.
 #
 # Pushes site.out/ to ~/labs.bannister.us/projects/model-elevation-earth/ on
 # the Dreamhost web server (the labs.bannister.us docroot), so the project
 # pages live at:
 #     https://labs.bannister.us/projects/model-elevation-earth/
 #
-# The homelab deploy (homelab: scripts/labs-deploy.sh) excludes this exact
-# path, so the two deploys never fight: this project owns its pages under
-# /projects/.
+# The homelab deploy excludes this exact path (safety net), so the two
+# deploys never fight: this project owns its pages under /projects/.
 #
 # Prerequisites:
 #   - The bannister.us ssh alias with the key-2024-bannister.us identity
