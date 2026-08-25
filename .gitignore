@@ -3,6 +3,7 @@
 .aider.input.history
 .aider.tags.cache.*
 dataflow.out/*
+datasets/*
 logs/*
 site.out/*
 
