@@ -1,18 +1,25 @@
 #!/bin/sh
 #
-# site-condense.sh: generate the condensed pages for the project site.
+# site-condense.sh: generate the project pages for the project site.
 #
 # Convention: the homelab project's documents/09-project-pages-conventions.md
 # (standard page set). Generates site.out/todo.html, site.out/prompts.html,
-# and site.out/documents.html from THIS project's own TODO.md, prompts/, and
-# documents/ at build time, so the pages stay current without hand-editing.
+# site.out/documents.html, and site.out/records.html from THIS project's own
+# TODO.md, prompts/, documents/, and records/ at build time, so the pages
+# stay current without hand-editing.
 #
 #   todo.html       - open items (completed items summarized as a count).
 #                     Handles both `* [ ]` and `- [ ]` bullet styles.
-#   prompts.html    - file map of prompts/ (path + first heading)
-#   documents.html  - file map of documents/ (path + first heading)
+#   prompts.html    - index of prompts/ (the ENTIRE tree, grouped by
+#                     directory), with links to full-text pages.
+#   documents.html  - index of documents/, with links to full-text pages.
+#   records.html    - index of records/, with links to full-text pages.
 #
-# Condensation is index/summary, never full contents.
+# Every .md file under prompts/ (whole tree), documents/, and records/ is
+# also published as its own full-text page, e.g. site.out/prompts-common-
+# 02-universal-rules.html. Markdown is converted with pandoc when available;
+# otherwise a minimal renderer is used, so the build stays portable.
+#
 # Reuses site.in/template.html (marker <!-- SITE-CONTENT -->, __TITLE__).
 #
 # Usage: site-condense.sh
@@ -47,31 +54,165 @@ page() {
     } > "$output"
 }
 
-# map_md: emit a file map of a markdown directory into an HTML page.
-# Usage: map_md TITLE DIR OUTPUT_FILE
-map_md() {
+# inline: render inline markdown (code spans, bold, links) as HTML.
+# Input is already HTML-escaped.
+inline() {
+    text=$1
+    text=$(printf '%s' "$text" | sed 's/`\([^`]*\)`/<code>\1<\/code>/g')
+    text=$(printf '%s' "$text" | sed 's/\*\*\([^*]*\)\*\*/<strong>\1<\/strong>/g')
+    text=$(printf '%s' "$text" | sed 's/\[\([^]]*\)\](\([^)]*\))/<a href="\2">\1<\/a>/g')
+    printf '%s' "$text"
+}
+
+# minimal_md_to_html: fallback markdown -> HTML fragment (used when pandoc
+# is unavailable). Handles ATX headings, fenced code blocks, bullet and
+# ordered lists, and paragraphs; inline markup via the inline helper.
+minimal_md_to_html() {
+    file=$1
+    in_code=0
+    in_list=0
+    list_kind=""
+    while IFS= read -r line; do
+        case "$line" in
+            '```'*)
+                if [ "$in_code" -eq 0 ]; then
+                    printf '<pre><code>\n'
+                    in_code=1
+                else
+                    printf '</code></pre>\n'
+                    in_code=0
+                fi
+                ;;
+            '#'*)
+                [ "$in_list" -eq 1 ] && { printf '</%s>\n' "$list_kind"; in_list=0; }
+                case "$line" in
+                    '###### '*) h=6 ;;
+                    '##### '*)  h=5 ;;
+                    '#### '*)   h=4 ;;
+                    '### '*)    h=3 ;;
+                    '## '*)     h=2 ;;
+                    '# '*)      h=1 ;;
+                    *)          h=0 ;;
+                esac
+                if [ "$h" -gt 0 ]; then
+                    text=$(printf '%s' "$line" | sed "s/^#\{$h\}[[:space:]]*//")
+                    printf '<h%d>%s</h%d>\n' "$h" "$(inline "$(printf '%s' "$text" | html_escape)")" "$h"
+                else
+                    printf '%s\n' "$(printf '%s' "$line" | html_escape)"
+                fi
+                ;;
+            '- '*|'* '*|'+ '*)
+                if [ "$in_list" -eq 0 ]; then
+                    printf '<ul>\n'
+                    in_list=1
+                    list_kind=ul
+                fi
+                item=${line#??}
+                printf '  <li>%s</li>\n' "$(inline "$(printf '%s' "$item" | html_escape)")"
+                ;;
+            [0-9]*'. '*)
+                if [ "$in_list" -eq 0 ]; then
+                    printf '<ol>\n'
+                    in_list=1
+                    list_kind=ol
+                fi
+                item=${line#*.}
+                item=${item# }
+                printf '  <li>%s</li>\n' "$(inline "$(printf '%s' "$item" | html_escape)")"
+                ;;
+            '')
+                [ "$in_list" -eq 1 ] && { printf '</%s>\n' "$list_kind"; in_list=0; }
+                [ "$in_code" -eq 0 ] && printf '\n'
+                ;;
+            *)
+                [ "$in_list" -eq 1 ] && { printf '</%s>\n' "$list_kind"; in_list=0; }
+                if [ "$in_code" -eq 0 ]; then
+                    printf '<p>%s</p>\n' "$(inline "$(printf '%s' "$line" | html_escape)")"
+                else
+                    printf '%s\n' "$(printf '%s' "$line" | html_escape)"
+                fi
+                ;;
+        esac
+    done < "$file"
+    [ "$in_list" -eq 1 ] && printf '</%s>\n' "$list_kind"
+}
+
+# md_to_html: markdown file -> HTML fragment. Prefers pandoc; falls back to
+# the minimal renderer so the build works without extra tools.
+md_to_html() {
+    file=$1
+    if command -v pandoc >/dev/null 2>&1; then
+        if pandoc -f markdown -t html --wrap=none "$file" 2>/dev/null; then
+            return 0
+        fi
+    fi
+    minimal_md_to_html "$file"
+}
+
+# first_heading: print the file's first heading (title), or empty.
+first_heading() {
+    sed -n 's/^#\{1,\}[[:space:]]*//p' "$1" | head -1
+}
+
+# flat_name: turn a repo-relative path into a flat output basename,
+# e.g. prompts/common/02-universal-rules.md -> prompts-common-02-universal-rules
+flat_name() {
+    printf '%s' "$1" | sed 's/\.md$//; s|/|-|g'
+}
+
+# publish_tree: publish every .md file under DIR as a full-text page.
+# Usage: publish_tree DIR
+publish_tree() {
+    dir=$1
+    [ -d "$dir" ] || return 0
+    for file in $(find "$dir" -name '*.md' -type f | sort); do
+        rel=${file#"$REPOSITORY_ROOT"/}
+        base=$(flat_name "$rel")
+        heading=$(first_heading "$file")
+        [ -n "$heading" ] || heading=$(basename "$rel")
+        tmp_page=$(mktemp)
+        md_to_html "$file" > "$tmp_page"
+        page "$heading" "$tmp_page" "$DIRECTORY_OUTPUT/$base.html"
+        rm -f "$tmp_page"
+    done
+}
+
+# map_tree: emit an index page (title) listing DIR's files grouped by
+# directory, each with a one-line purpose and a link to its full-text page.
+# Usage: map_tree TITLE DIR OUTPUT_FILE
+map_tree() {
     title=$1
     dir=$2
     output=$3
-    tmp_map=$(mktemp)
+    tmp_index=$(mktemp)
     {
-        echo '<ul>'
+        echo "<h1>$title</h1>"
         if [ -d "$dir" ]; then
-            for f in $(find "$dir" -name '*.md' -type f | sort); do
-                rel=${f#"$REPOSITORY_ROOT"/}
-                heading=$(sed -n 's/^#\{1,\}[[:space:]]*//p' "$f" | head -1)
+            prev_dir=""
+            for file in $(find "$dir" -name '*.md' -type f | sort); do
+                rel=${file#"$REPOSITORY_ROOT"/}
+                dir_of=${rel%/*}
+                base=$(flat_name "$rel")
+                heading=$(first_heading "$file")
                 [ -n "$heading" ] || heading='(no heading)'
-                printf '  <li><code>%s</code> — %s</li>\n' \
+                if [ "$dir_of" != "$prev_dir" ]; then
+                    [ -n "$prev_dir" ] && echo '</ul>'
+                    printf '<h3><code>%s/</code></h3>\n' "$(printf '%s' "$dir_of" | html_escape)"
+                    echo '<ul>'
+                    prev_dir=$dir_of
+                fi
+                printf '  <li><code>%s</code> — %s — <a href="%s.html">read</a></li>\n' \
                     "$(printf '%s' "$rel" | html_escape)" \
-                    "$(printf '%s' "$heading" | html_escape)"
+                    "$(printf '%s' "$heading" | html_escape)" \
+                    "$base"
             done
+            [ -n "$prev_dir" ] && echo '</ul>'
         else
-            echo '  <li>no directory</li>'
+            echo '<p>no directory</p>'
         fi
-        echo '</ul>'
-    } > "$tmp_map"
-    page "$title" "$tmp_map" "$output"
-    rm -f "$tmp_map"
+    } > "$tmp_index"
+    page "$title" "$tmp_index" "$output"
+    rm -f "$tmp_index"
 }
 
 FILE_TODO="$REPOSITORY_ROOT/TODO.md"
@@ -121,9 +262,13 @@ fi
 page 'Todo' "$tmp_todo" "$DIRECTORY_OUTPUT/todo.html"
 rm -f "$tmp_todo"
 
-# --- prompts.html / documents.html -------------------------------------------
-map_md 'Prompts' "$REPOSITORY_ROOT/prompts" "$DIRECTORY_OUTPUT/prompts.html"
-map_md 'Documents' "$REPOSITORY_ROOT/documents" "$DIRECTORY_OUTPUT/documents.html"
+# --- prompts.html / documents.html / records.html + full-text pages ---------
+map_tree 'Prompts' "$REPOSITORY_ROOT/prompts" "$DIRECTORY_OUTPUT/prompts.html"
+publish_tree "$REPOSITORY_ROOT/prompts"
+map_tree 'Documents' "$REPOSITORY_ROOT/documents" "$DIRECTORY_OUTPUT/documents.html"
+publish_tree "$REPOSITORY_ROOT/documents"
+map_tree 'Records' "$REPOSITORY_ROOT/records" "$DIRECTORY_OUTPUT/records.html"
+publish_tree "$REPOSITORY_ROOT/records"
 
-echo "site-condense: built todo.html, prompts.html, documents.html into $DIRECTORY_OUTPUT"
+echo "site-condense: built todo.html, prompts.html, documents.html, records.html + full-text pages into $DIRECTORY_OUTPUT"
 exit 0
