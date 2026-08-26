@@ -134,15 +134,28 @@ minimal_md_to_html() {
                 ;;
         esac
     done < "$file"
-    [ "$in_list" -eq 1 ] && printf '</%s>\n' "$list_kind"
+    if [ "$in_list" -eq 1 ]; then
+        printf '</%s>\n' "$list_kind"
+    fi
+    return 0
+}
+
+# find_pandoc: locate pandoc (on PATH, or in $HOME/bin) or print nothing.
+find_pandoc() {
+    if command -v pandoc >/dev/null 2>&1; then
+        command -v pandoc
+    elif [ -x "$HOME/bin/pandoc" ]; then
+        printf '%s\n' "$HOME/bin/pandoc"
+    fi
 }
 
 # md_to_html: markdown file -> HTML fragment. Prefers pandoc; falls back to
 # the minimal renderer so the build works without extra tools.
 md_to_html() {
     file=$1
-    if command -v pandoc >/dev/null 2>&1; then
-        if pandoc -f markdown -t html --wrap=none "$file" 2>/dev/null; then
+    pandoc_bin=$(find_pandoc)
+    if [ -n "$pandoc_bin" ]; then
+        if "$pandoc_bin" -f markdown -t html --wrap=none "$file" 2>/dev/null; then
             return 0
         fi
     fi
