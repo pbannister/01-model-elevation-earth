@@ -1,6 +1,6 @@
 # Task: Define and implement automated dataset download
 
-[TASK]
+## TASK-DESCRIPTION
 Define the automated download mechanism for the datasets listed in `datasets.in/datasets-manifest.yml`.
 Implement the download for every dataset whose `want_download` field is `true`.
 Check that `/datasets/` exists and is writable before downloading anything; stop with a clear message if it is missing.
@@ -10,10 +10,10 @@ Add tests for the download scripts in `tests/`.
 Run `make test` from the repository root.
 Commit the completed work.
 
-[OUTPUT FORMAT]
+## TASK-OUTPUT
 Report the created files and the result of `make test`.
 
-[CONTEXT]
+## TASK-CONTEXT
 The manifest is the input for this task.
 The manifest lives at `datasets.in/datasets-manifest.yml`.
 Each entry carries the fields an automated downloader needs: id, access method, access location, and file format.
@@ -28,7 +28,7 @@ The download scripts must skip a dataset already recorded in `/datasets/manifest
 The `/datasets/` volume is shared with `athena.lan` and `beast.lan`; a homelab task keeps both hosts synchronized.
 Generated output must not be committed.
 
-[FILES]
+## TASK-FILES
 - `scripts/datasets-download.sh` — new
 - `scripts/datasets-download-<dataset-id>.sh` — new, one per wanted dataset
 - `tests/03-datasets-download.sh` — new

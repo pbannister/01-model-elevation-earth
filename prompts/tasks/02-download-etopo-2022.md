@@ -1,6 +1,6 @@
 # Task: Download the ETOPO 2022 dataset
 
-[TASK]
+## TASK-DESCRIPTION
 Download the ETOPO 2022 global relief dataset into `/datasets/`.
 Check that `/datasets/` exists and is writable before downloading; stop with a clear message if it is missing.
 Create the directory `/datasets/dataset-etopo-2022`.
@@ -9,10 +9,10 @@ Record the download in `/datasets/manifest.yml`.
 Run `make test` from the repository root.
 Commit the completed work.
 
-[OUTPUT FORMAT]
+## TASK-OUTPUT
 Report the created files, the size of the downloaded dataset, and the result of `make test`.
 
-[CONTEXT]
+## TASK-CONTEXT
 ETOPO 2022 is the chosen first dataset because it downloads over plain HTTPS without registration or a license gate.
 ETOPO 2022 is a 15 arc-second global relief model covering land and seafloor.
 The dataset is described in `documents/02-datasets-suitable.md` and `documents/01-dataset-sources.md`.
@@ -25,7 +25,7 @@ The `/datasets/manifest.yml` entry records: id, purpose, download date, and sour
 Download source: NOAA NCEI, `https://www.ncei.noaa.gov/products/etopo-global-relief-model`.
 Do not download any other dataset in this task; later datasets are separate later tasks.
 
-[FILES]
+## TASK-FILES
 - `scripts/datasets-download-etopo-2022.sh` — new
 - `tests/03-datasets-download.sh` — new
 - `datasets.in/datasets-manifest.yml` — existing, read-only for this task
