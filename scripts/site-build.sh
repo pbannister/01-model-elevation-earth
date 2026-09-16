@@ -75,7 +75,8 @@ page_title() {
     case "$name_base" in
         index)     echo "Global Elevation Model Dataset" ;;
         dashboard) echo "Dashboard" ;;
-        *)         echo "$name_base" ;;
+        *)
+            echo "$name_base" | tr '_-' '  ' | awk '{for (i = 1; i <= NF; i++) $i = toupper(substr($i, 1, 1)) substr($i, 2); print}' ;;
     esac
 }
 
