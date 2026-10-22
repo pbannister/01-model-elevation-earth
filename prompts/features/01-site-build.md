@@ -11,23 +11,23 @@ It is deployed at `https://labs.bannister.us/projects/model-elevation-earth/` fo
 
 ## Requirements
 
-- `scripts/site-build.sh` must generate the static site in `site.out/` from the input in `site.in/`.
-- Each `site.in/*.txt` input file must produce `site.out/<name>.html`.
-- Generated output must be identified as generated.
-- The script must accept optional input and output directory arguments.
-- When no arguments are given, the script must use `site.in/` and `site.out/` relative to the repository root.
-- The script must be a POSIX shell script.
-- The HTML page structure must live in `site.in/template.html`, not in the build script.
-- `site.in/template.html` must contain the marker line `<!-- SITE-CONTENT -->` where page content is inserted.
-- The site must include a summary page (`index.html`) and a dashboard page (`dashboard.html`).
-- The dashboard page may contain `__TOKEN__` placeholders for live state.
-- Live state comes from a generated model file written by `scripts/site-state-fetch.sh`.
-- The default state file is `dataflow.out/site-state.txt`, overridable with a `SITE_STATE_FILE` environment variable.
-- When the state file is present, the build must substitute its `KEY=value` lines for matching `__KEY__` placeholders.
-- When the state file is absent, remaining `__KEY__` placeholders must render as `unavailable`, so the build stays portable.
-- The site build must not depend on the live system.
-- `scripts/site-deploy.sh` must publish `site.out/` to `~/labs.bannister.us/projects/model-elevation-earth/` on the Dreamhost web server using the `bannister.us` SSH alias.
-- `scripts/site-deploy.sh` must abort when the site output contains sensitive content: MAC addresses, private LAN IPs, usernames, home paths, or private-key material.
+- `SITE-BUILD-R001` — `scripts/site-build.sh` must generate the static site in `site.out/` from the input in `site.in/`.
+- `SITE-BUILD-R002` — Each `site.in/*.txt` input file must produce `site.out/<name>.html`.
+- `SITE-BUILD-R003` — Generated output must be identified as generated.
+- `SITE-BUILD-R004` — The script must accept optional input and output directory arguments.
+- `SITE-BUILD-R005` — When no arguments are given, the script must use `site.in/` and `site.out/` relative to the repository root.
+- `SITE-BUILD-R006` — The script must be a POSIX shell script.
+- `SITE-BUILD-R007` — The HTML page structure must live in `site.in/template.html`, not in the build script.
+- `SITE-BUILD-R008` — `site.in/template.html` must contain the marker line `<!-- SITE-CONTENT -->` where page content is inserted.
+- `SITE-BUILD-R009` — The site must include a summary page (`index.html`) and a dashboard page (`dashboard.html`).
+- `SITE-BUILD-R010` — The dashboard page may contain `__TOKEN__` placeholders for live state.
+- `SITE-BUILD-R011` — Live state comes from a generated model file written by `scripts/site-state-fetch.sh`.
+- `SITE-BUILD-R012` — The default state file is `dataflow.out/site-state.txt`, overridable with a `SITE_STATE_FILE` environment variable.
+- `SITE-BUILD-R013` — When the state file is present, the build must substitute its `KEY=value` lines for matching `__KEY__` placeholders.
+- `SITE-BUILD-R014` — When the state file is absent, remaining `__KEY__` placeholders must render as `unavailable`, so the build stays portable.
+- `SITE-BUILD-R015` — The site build must not depend on the live system.
+- `SITE-BUILD-R016` — `scripts/site-deploy.sh` must publish `site.out/` to `~/labs.bannister.us/projects/model-elevation-earth/` on the Dreamhost web server using the `bannister.us` SSH alias.
+- `SITE-BUILD-R017` — `scripts/site-deploy.sh` must abort when the site output contains sensitive content: MAC addresses, private LAN IPs, usernames, home paths, or private-key material.
 
 ## Behavior
 

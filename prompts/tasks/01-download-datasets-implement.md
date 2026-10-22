@@ -1,6 +1,11 @@
 # Task: Define and implement automated dataset download
 
 ## TASK-DESCRIPTION
+- Create: `scripts/datasets-download.sh`
+- Create: `scripts/datasets-download-<dataset-id>.sh`
+- Create: `tests/03-datasets-download.sh`
+- Modify: `datasets.in/datasets-manifest.yml`
+
 Define the automated download mechanism for the datasets listed in `datasets.in/datasets-manifest.yml`.
 Implement the download for every dataset whose `want_download` field is `true`.
 Check that `/datasets/` exists and is writable before downloading anything; stop with a clear message if it is missing.
@@ -29,9 +34,16 @@ The `/datasets/` volume is shared with `athena.lan` and `beast.lan`; a homelab t
 Generated output must not be committed.
 
 ## TASK-FILES
-- `scripts/datasets-download.sh` — new
-- `scripts/datasets-download-<dataset-id>.sh` — new, one per wanted dataset
-- `tests/03-datasets-download.sh` — new
-- `datasets.in/datasets-manifest.yml` — existing, read-only for this task
-- `/datasets/` — populated by the download scripts, outside the repository
-- `/datasets/manifest.yml` — created or updated by the download scripts, outside the repository
+
+| Operation | Path |
+|---|---|
+| create | `scripts/datasets-download.sh` |
+| create | `scripts/datasets-download-<dataset-id>.sh` |
+| create | `tests/03-datasets-download.sh` |
+| modify | `datasets.in/datasets-manifest.yml` |
+
+## TASK-VERIFY
+- Run: `make test` from the repository root.
+- Expected: exit status 0.
+
+OUTPUT: the content of `scripts/datasets-download.sh`, as TASK-OUTPUT describes, and nothing else.

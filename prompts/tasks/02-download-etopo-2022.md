@@ -1,6 +1,10 @@
 # Task: Download the ETOPO 2022 dataset
 
 ## TASK-DESCRIPTION
+- Create: `scripts/datasets-download-etopo-2022.sh`
+- Create: `tests/03-datasets-download.sh`
+- Modify: `datasets.in/datasets-manifest.yml`
+
 Download the ETOPO 2022 global relief dataset into `/datasets/`.
 Check that `/datasets/` exists and is writable before downloading; stop with a clear message if it is missing.
 Create the directory `/datasets/dataset-etopo-2022`.
@@ -26,8 +30,15 @@ Download source: NOAA NCEI, `https://www.ncei.noaa.gov/products/etopo-global-rel
 Do not download any other dataset in this task; later datasets are separate later tasks.
 
 ## TASK-FILES
-- `scripts/datasets-download-etopo-2022.sh` — new
-- `tests/03-datasets-download.sh` — new
-- `datasets.in/datasets-manifest.yml` — existing, read-only for this task
-- `/datasets/dataset-etopo-2022/` — populated, outside the repository
-- `/datasets/manifest.yml` — created or updated, outside the repository
+
+| Operation | Path |
+|---|---|
+| create | `scripts/datasets-download-etopo-2022.sh` |
+| create | `tests/03-datasets-download.sh` |
+| modify | `datasets.in/datasets-manifest.yml` |
+
+## TASK-VERIFY
+- Run: `make test` from the repository root.
+- Expected: exit status 0.
+
+OUTPUT: the content of `scripts/datasets-download-etopo-2022.sh`, as TASK-OUTPUT describes, and nothing else.

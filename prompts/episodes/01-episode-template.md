@@ -33,33 +33,35 @@ llm/episode-{number}
 
 # Filled Example
 
-This example shows the sources-survey task as an episode.
+This example shows the worked Site Build feature as an episode.
 
 It is illustrative; it is not dispatched as-is.
 
 ## EPISODE-GOAL
-Write `documents/01-dataset-sources.md`, the list of freely available GDEM dataset sources.
+Implement the Site Build feature.
 
 ## EPISODE-ACCEPTANCE
-- Does `documents/01-dataset-sources.md` list every known free GDEM source?
-- Does each entry describe the source's likely use and meaningful attributes?
+- Does `scripts/site-build.sh` generate `site.out/` from `site.in/`?
+- Does `make test` pass from the repository root?
 - Is the diff reviewable in one sitting?
 
 ## EPISODE-RISKS
-- Are the sources verifiable from the public Internet?
-- Does the document avoid invented sources or attributes?
+- Is `sh` available in the target environment?
+- Do the tests avoid generated output in source directories?
 
 ## EPISODE-TASKS
-- Research freely available GDEM dataset sources.
-- Write `documents/01-dataset-sources.md`.
-- Review the document for accuracy and completeness.
+- Create `scripts/site-build.sh`.
+- Create `site.in/hello.txt`.
+- Add tests in `tests/`.
 - Run `make test`.
 
 ## EPISODE-OUTPUT
-Report the created file and the result of `make test`.
+Report the created files and the result of `make test`.
 
 ## EPISODE-FILES
-- `documents/01-dataset-sources.md` — new
+- `scripts/site-build.sh` — new
+- `site.in/hello.txt` — new
+- `tests/01-site-build.sh` — new
 
 ## EPISODE-BRANCH
 llm/episode-01
